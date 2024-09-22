@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Bus Pass System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('i6.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        fieldset.container {
+            padding: 2em;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: black;
+            text-align: center;
+            margin-bottom: 2em;
+        }
+
+        .overview-panels {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1em;
+        }
+
+        .panel {
+            background: linear-gradient(135deg, #f78da7, #f9748f);
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            text-align: center;
+            color: white;
+        }
+
+        .panel h2 {
+            margin: 0 0 0.5em;
+            font-size: 1.5em;
+        }
+
+        .panel p {
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        .quick-links {
+            margin-top: 2em;
+        }
+
+        .quick-links a, .view-button {
+            display: block;
+            background: linear-gradient(135deg, #a2c2e8, #e0f7fa);
+            color: white;
+            padding: 1em;
+            text-align: center;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-bottom: 1em;
+            transition: background 0.3s, transform 0.3s;
+            font-size: 1.1em;
+        }
+
+        .quick-links a:hover, .view-button:hover {
+            background: linear-gradient(135deg, #e0f7fa, #a2c2e8);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <fieldset class="container">
+        <h1>Admin Dashboard</h1>
+        <div class="overview-panels">
+            <div class="panel">
+                <h2>Total Routes</h2>
+                <p id="totalRoutes">Details about total routes...</p>
+            </div>
+            <div class="panel">
+                <h2>Conductors</h2>
+                <p id="conductors">Details about conductors...</p>
+            </div>
+        </div>
+        
+        <div class="quick-links">
+            <a href="manage student pass.html">Manage Student Passes</a>
+            <a href="manage conductor.html">Manage Conductors</a>
+            <a href="manage_routes.html">Manage Routes</a>
+<a href="view.html">View ID</a>
+<a href="index.html">Back To Login</a>
+        </div>
+    </fieldset>
+    <script>
+        function updateDashboardDetails(totalRoutes, conductors) {
+            document.getElementById('totalRoutes').textContent = totalRoutes;
+            document.getElementById('conductors').textContent = conductors;
+        }
+
+        function fetchData() {
+            const conductors = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+            const routes = JSON.parse(localStorage.getItem('routes')) || [];
+
+            const totalRoutes = routes.length;
+            const totalConductors = conductors.filter(user => user.role === 'conductor').length;
+
+            updateDashboardDetails(totalRoutes, totalConductors);
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchData);
+    </script>
+</body>
+</html>

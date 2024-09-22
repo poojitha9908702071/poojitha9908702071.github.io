@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Bus Pass System</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+            background-size: 200% 200%;
+            animation: gradientAnimation 15s ease infinite;
+            color: white;
+        }
+
+        /* Background Gradient Animation */
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            padding: 2em;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Fade-in effect */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #f9f871; /* Soft yellow color */
+            animation: slideIn 1s ease-out;
+        }
+
+        /* Slide-in text animation */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .overview-panels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2em;
+        }
+
+        .panel {
+            background: linear-gradient(135deg, #ff6ec4, #7873f5, #6fffe9, #f0ff6a); /* Rainbow gradient */
+            background-size: 400% 400%;
+            padding: 1.5em;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            width: 30%;
+            color: white;
+            animation: rainbowPulse 5s ease infinite, fadeIn 1s ease-in-out;
+            transition: transform 0.3s;
+        }
+
+        /* Pulsating rainbow effect */
+        @keyframes rainbowPulse {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .panel:hover {
+            transform: scale(1.05);
+        }
+
+        .quick-links {
+            margin-bottom: 2em;
+        }
+
+        .quick-links a {
+            display: block;
+            background-color: #ff6ec4; /* Pinkish tone */
+            color: white;
+            padding: 1em;
+            text-align: center;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-bottom: 1em;
+            transition: background-color 0.3s, transform 0.3s;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .quick-links a:hover {
+            background-color: #ffb3d9; /* Lighter pink on hover */
+            transform: scale(1.05);
+        }
+
+        .notifications h2 {
+            color: #f9f871; /* Soft yellow */
+            animation: slideIn 1.5s ease-in-out;
+        }
+
+        .notifications p {
+            color: #ddd;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Dashboard</h1>
+
+        <div class="overview-panels">
+            <div class="panel">
+                <h2>Current Pass Status</h2>
+                <p>Details about current pass...</p>
+            </div>
+            <div class="panel">
+                <h2>Renewal Reminders</h2>
+                
+            <a href="renew pass.html"><p>check</p></a>
+            </div>
+        </div>
+
+        <div class="quick-links">
+            <a href="eticket.html">Buy eTicket</a>
+            <a href="apply new bus pass.html">Apply New Pass</a>
+            <a href="renew pass.html">Renew Pass</a>
+            <a href="add money.html">Add Money</a>
+            <a href="search.html">Search ID</a>
+            <a href="index.html">Back To Login</a>
+       
+        </div>
+    </div>
+</body>
+</html>

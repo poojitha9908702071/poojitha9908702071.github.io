@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply New Bus Pass - Bus Pass System</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            background-image: url('i3.jpg'); /* Replace with your background image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            overflow: hidden; /* Prevent scrolling on the body */
+        }
+
+        .container {
+            padding: 1em;
+            width: 100%; /* Full width */
+            max-width: 600px; /* Limit maximum width */
+            background: rgba(255, 255, 255, 0.85); /* Transparent white background */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 1em;
+            height: 95vh; /* Adjust to allow scroll within the form */
+            overflow-y: auto; /* Enable scrolling inside the container */
+            box-sizing: border-box;
+        }
+
+        fieldset {
+            border: none;
+            padding: 1.5em;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        legend {
+            font-weight: bold;
+            padding: 0.5em;
+            font-size: 1.5em;
+            color: #333;
+            text-align: center;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .input-group {
+            margin-bottom: 1em;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+
+        input[type="text"], input[type="date"], input[type="file"], select {
+            width: 100%;
+            padding: 0.75em;
+            margin-top: 0.5em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #fff;
+        }
+
+        button {
+            padding: 0.75em;
+            background-color: #e91e63; /* Pink color for button */
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+            margin-top: 1em;
+        }
+
+        button:hover {
+            background-color: #c2185b; /* Darker pink for hover effect */
+        }
+
+        .cost-info {
+            margin-top: 1em;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 1em;
+            color: white;
+            background-color: #28a745;
+            margin-top: 1em;
+            border-radius: 5px;
+        }
+
+        .route-select {
+            margin-bottom: 1.5em; /* Adjust the space below the route dropdown */
+        }
+
+        .pay-button-container {
+            text-align: right; /* Align the pay button to the right */
+            margin-top: 1em; /* Space above the pay button */
+        }
+
+        .pay-button {
+            padding: 0.5em 1em;
+            background-color: #e91e63; /* Pink color for pay button */
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .pay-button:hover {
+            background-color: #c2185b; /* Darker pink for hover effect */
+        }
+
+        .back-button {
+            display: block;
+            margin: 1em auto;
+            text-align: center;
+            padding: 0.75em;
+            background-color: #e91e63; /* Pink color for button */
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 1em;
+            width: 100%;
+        }
+
+        .back-button:hover {
+            background-color: #c2185b; /* Darker pink for hover effect */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <fieldset>
+            <legend>Apply New Bus Pass</legend>
+            <form id="applyPassForm" method="post" enctype="multipart/form-data">
+                <div class="input-group">
+                    <label>Pass Type:</label>
+                    <input type="radio" id="student" name="passType" value="student" required>
+                    <label for="student">Student Pass</label>
+                    <input type="radio" id="route" name="passType" value="route" required>
+                    <label for="route">Route Pass</label>
+                </div>
+
+                <div class="input-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="school">School/Organization:</label>
+                    <input type="text" id="school" name="school" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="photo">Upload Photo:</label>
+                    <input type="file" id="photo" name="photo" accept="image/*" required>
+                </div>
+
+                <div class="route-select">
+                    <label for="routeSelect">Select Route:</label>
+                    <select id="routeSelect" name="route" required>
+                        <option value="">Select a route</option>
+                        <option value="30">SIMATS to Koyambedu Bus Terminus</option>
+                        <option value="40">SIMATS to Anna Nagar</option>
+                        <option value="50">SIMATS to Chennai Central</option>
+                        <option value="60">SIMATS to T. Nagar</option>
+                        <option value="55">SIMATS to Guindy</option>
+                        <option value="70">SIMATS to Tambaram</option>
+                        <option value="65">SIMATS to Velachery</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="validity">Validity Period:</label>
+                    <select id="validity" name="validity" required>
+                        <option value="" selected>Select validity period</option>
+                        <option value="1 month" data-cost="750">1 Month - ₹750</option>
+                        <option value="3 months" data-cost="2000">3 Months - ₹2000</option>
+                        <option value="6 months" data-cost="3500">6 Months - ₹3500</option>
+                        <option value="1 year" data-cost="6500">1 Year - ₹6500</option>
+                    </select>
+                </div>
+
+                <div class="cost-info" id="costInfo">Cost: ₹0</div>
+
+                <div class="pay-button-container">
+                    <button type="button" class="pay-button" onclick="goToPayment()">Pay</button>
+                </div>
+
+                <button type="submit">Submit</button>
+                <div class="success-message" id="successMessage">Application submitted successfully!</div>
+
+                <a href="user dashbord.html" class="back-button">Back to User Dashboard</a>
+            </form>
+        </fieldset>
+    </div>
+
+    <script>
+        document.getElementById('validity').addEventListener('change', function() {
+            const costInfo = document.getElementById('costInfo');
+            const selectedOption = this.options[this.selectedIndex];
+            const cost = selectedOption.getAttribute('data-cost');
+            costInfo.textContent = `Cost: ₹${cost}`;
+        });
+
+        document.getElementById('applyPassForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form data
+            const formData = new FormData(this);
+            const formObject = Object.fromEntries(formData.entries());
+
+            // Save to local storage (Simulate saving to a database)
+            const applications = JSON.parse(localStorage.getItem('applications')) || [];
+            applications.push(formObject);
+            localStorage.setItem('applications', JSON.stringify(applications));
+
+            // Display success message
+            document.getElementById('successMessage').style.display = 'block';
+
+            // Optionally, you can also reset the form fields after submission
+            // this.reset();
+        });
+
+        function goToPayment() {
+            window.location.href = 'payment.html'; // Redirect to payment page
+        }
+    </script>
+</body>
+</html>

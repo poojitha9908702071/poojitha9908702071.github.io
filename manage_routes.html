@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Routes - Bus Pass System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.2)), 
+                        url('i5.jpg') no-repeat center center fixed;
+            background-size: cover;
+            animation: backgroundAnimation 15s infinite alternate;
+        }
+
+        @keyframes backgroundAnimation {
+            0% { background-position: center; }
+            100% { background-position: right; }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 2em auto;
+            padding: 2em;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 1em;
+            color: #333;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+        }
+
+        th, td {
+            padding: 1em;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: linear-gradient(90deg, #007BFF, #0056b3);
+            color: white;
+        }
+
+        button {
+            padding: 0.5em;
+            background: linear-gradient(135deg, #ff007f, #ff8c00);
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #ff8c00, #ff007f);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Routes</h1>
+        <button onclick="window.location.href='add_route.html'">Add New Route</button>
+        <table id="routesTable">
+            <thead>
+                <tr>
+                    <th>Route Number</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Starting Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Routes will be dynamically added here -->
+            </tbody>
+        </table>
+
+<center>
+            <a href="admin dashboard.html">Back To Admin Dashboard</a>
+</center>
+    </div>
+
+    <script>
+        // Function to load routes from localStorage and display them in the table
+        function loadRoutes() {
+            const routesTableBody = document.getElementById('routesTable').querySelector('tbody');
+            routesTableBody.innerHTML = ''; // Clear existing rows
+
+            const routes = JSON.parse(localStorage.getItem('routes')) || [];
+
+            routes.forEach(route => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${route.routeNumber}</td>
+                    <td>${route.from}</td>
+                    <td>${route.to}</td>
+                    <td>${route.time}</td>
+                    <td class="btn-group">
+                        <button onclick="editRoute('${route.routeNumber}')">Edit</button>
+                        <button onclick="deleteRoute('${route.routeNumber}')">Delete</button>
+                    </td>
+                `;
+                routesTableBody.appendChild(row);
+            });
+        }
+
+        // Function to handle route deletion
+        function deleteRoute(routeNumber) {
+            if (confirm('Are you sure you want to delete this route?')) {
+                const routes = JSON.parse(localStorage.getItem('routes')) || [];
+                const updatedRoutes = routes.filter(route => route.routeNumber !== routeNumber);
+                localStorage.setItem('routes', JSON.stringify(updatedRoutes));
+                loadRoutes(); // Reload the routes table
+            }
+        }
+
+        // Function to edit route (navigate to edit route page)
+        function editRoute(routeNumber) {
+            window.location.href = `edit-route.html?route=${routeNumber}`;
+        }
+
+        // Load routes when the page is loaded
+        document.addEventListener('DOMContentLoaded', loadRoutes);
+    </script>
+</body>
+</html>

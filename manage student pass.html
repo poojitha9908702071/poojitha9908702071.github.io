@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Student Pass - Bus Pass System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            padding: 2em;
+        }
+        fieldset {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 2em;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        legend {
+            font-weight: bold;
+            padding: 0 10px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 0.75em;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 0.5em;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-right: 0.5em;
+        }
+        .approve-btn {
+            background-color: #28a745;
+        }
+        .approve-btn:hover {
+            background-color: #218838;
+        }
+        .reject-btn {
+            background-color: #dc3545;
+        }
+        .reject-btn:hover {
+            background-color: #c82333;
+        }
+        .generate-btn {
+            background-color: #007BFF;
+        }
+        .generate-btn:hover {
+            background-color: #0056b3;
+        }
+        .filters {
+            margin-bottom: 1em;
+        }
+        .filters select {
+            padding: 0.5em;
+            margin-right: 1em;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+        }
+        .status-approved {
+            background-color: #d4edda;
+        }
+        .status-rejected {
+            background-color: #f8d7da;
+        }
+        .clear-btn {
+            background-color: #dc3545;
+            margin-top: 1em;
+        }
+        .clear-btn:hover {
+            background-color: #c82333;
+        }
+        .back-button {
+            display: block;
+            padding: 0.75em 1.5em;
+            margin: 20px auto; /* Centers the button */
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Student Passes</h1>
+        <fieldset>
+            <legend>Student Passes</legend>
+            <div class="filters">
+                <label for="status">Filter by status:</label>
+                <select id="status" onchange="filterApplications()">
+                    <option value="all">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>School</th>
+                        <th>Status</th>
+                        <th>Validity Period</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="applicationsTable">
+                    <!-- Rows with data go here -->
+                </tbody>
+            </table>
+            <button class="clear-btn" onclick="clearAllData()">Clear All Data</button><br>
+
+            <a href="admin dashboard.html" class="back-button">Back to Admin Dashboard</a>
+        </fieldset>
+    </div>
+
+    <script>
+        let applications = [];
+
+        // Load applications from localStorage and display them
+        function loadApplications() {
+            applications = JSON.parse(localStorage.getItem('applications')) || [];
+            displayApplications('all'); // Initially show all applications
+        }
+
+        // Display applications based on filter
+        function displayApplications(filterStatus) {
+            const tableBody = document.getElementById('applicationsTable');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            applications.forEach(app => {
+                const status = app.status || 'Pending';
+                if (filterStatus === 'all' || status.toLowerCase() === filterStatus.toLowerCase()) {
+                    const row = document.createElement('tr');
+                    const statusClass = status === 'Approved' ? 'status-approved' : 
+                                        (status === 'Rejected' ? 'status-rejected' : 'status-pending');
+
+                    row.className = statusClass;
+                    row.innerHTML = `
+                        <td>${app.name}</td>
+                        <td>${app.school}</td>
+                        <td>${status}</td>
+                        <td>${app.validity}</td>
+                        <td>
+                            ${status === 'Pending' ? `
+                                <button class="approve-btn" onclick="approveApplication('${app.name}')">Approve</button>
+                                <button class="reject-btn" onclick="rejectApplication('${app.name}')">Reject</button>
+                            ` : ''}
+                            <button class="generate-btn" onclick="generateQRCode('${app.name}')">Generate ID</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            });
+        }
+
+        // Approve application
+        function approveApplication(name) {
+            const application = applications.find(app => app.name === name);
+            if (application && (application.status === 'Pending' || application.status === undefined)) {
+                application.status = 'Approved';
+                if (!application.qrCodeId) {
+                    application.qrCodeId = Math.floor(Math.random() * 10000);
+                }
+                localStorage.setItem('applications', JSON.stringify(applications));
+                saveApprovedPass(application);
+                displayApplications(document.getElementById('status').value);
+            }
+        }
+
+        // Save approved pass for Verify Pass ID page
+        function saveApprovedPass(application) {
+            let approvedPasses = JSON.parse(localStorage.getItem('approvedPasses')) || [];
+            approvedPasses.push({
+                name: application.name,
+                qrCodeId: application.qrCodeId
+            });
+            localStorage.setItem('approvedPasses', JSON.stringify(approvedPasses));
+        }
+
+        // Reject application
+        function rejectApplication(name) {
+            const application = applications.find(app => app.name === name);
+            if (application && (application.status === 'Pending' || application.status === undefined)) {
+                application.status = 'Rejected';
+                localStorage.setItem('applications', JSON.stringify(applications));
+                displayApplications(document.getElementById('status').value);
+            }
+        }
+
+        // Generate QR Code
+        function generateQRCode(name) {
+            const application = applications.find(app => app.name === name);
+            if (application) {
+                const row = [...document.querySelectorAll('tbody tr')].find(tr => tr.innerHTML.includes(name));
+                const generateBtn = row.querySelector('.generate-btn');
+                const existingQrCodeId = row.querySelector('.qr-code-id');
+
+                if (application.status === 'Approved') {
+                    if (application.qrCodeId) {
+                        alert(`QR Code ID: ${application.qrCodeId}`);
+                    } else {
+                        application.qrCodeId = Math.floor(Math.random() * 10000);
+                        localStorage.setItem('applications', JSON.stringify(applications));
+                        saveApprovedPass(application); 
+                        alert(`QR Code generated. QR Code ID: ${application.qrCodeId}`);
+                    }
+
+                    // Display the QR Code ID next to the button
+                    if (existingQrCodeId) {
+                        existingQrCodeId.textContent = `QR Code ID: ${application.qrCodeId}`;
+                    } else {
+                        const qrCodeSpan = document.createElement('span');
+                        qrCodeSpan.className = 'qr-code-id';
+                        qrCodeSpan.style.marginLeft = '10px';
+                        qrCodeSpan.textContent = `QR Code ID: ${application.qrCodeId}`;
+                        generateBtn.after(qrCodeSpan);
+                    }
+                } else {
+                    alert(`Cannot generate QR Code. The application status is ${application.status}.`);
+                }
+            }
+        }
+
+        // Filter applications based on status
+        function filterApplications() {
+            const filterStatus = document.getElementById('status').value;
+            displayApplications(filterStatus); 
+        }
+
+        // Clear all stored applications
+        function clearAllData() {
+            localStorage.removeItem('applications'); 
+            applications = [];
+            displayApplications('all');
+            alert('All data has been cleared.');
+        }
+
+        // Load applications when the page loads
+        document.addEventListener('DOMContentLoaded', loadApplications);
+    </script>
+</body>
+</html>

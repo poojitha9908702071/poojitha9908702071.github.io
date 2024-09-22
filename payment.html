@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Bus Pass System</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #333, #555); /* Dark gradient background */
+            background-size: 200% 200%;
+            animation: gradientAnimation 15s ease infinite;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Gradient Animation */
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            background-color: #1c1c1c;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Fade-in effect for the container */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #f7a74e; /* Warm orange color */
+            margin-bottom: 1em;
+        }
+
+        .payment-method {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1.5em;
+        }
+
+        .payment-method button {
+            padding: 0.75em;
+            background-color: #444;
+            border: none;
+            color: #f7f7f7;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 30%;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .payment-method button:hover {
+            background-color: #666;
+            transform: scale(1.05); /* Slight grow on hover */
+        }
+
+        .form-group {
+            display: none;
+            margin-bottom: 1em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75em;
+            margin-top: 0.5em;
+            border: 1px solid #666;
+            border-radius: 4px;
+            background-color: #333;
+            color: #f7f7f7;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 0.5em;
+            display: block;
+            color: #f7f7f7;
+        }
+
+        .submit-button {
+            padding: 0.75em;
+            background-color: #f7a74e; /* Warm orange color */
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #f78e3d;
+            transform: scale(1.05); /* Slight grow on hover */
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 1em;
+            color: white;
+            background-color: #28a745;
+            margin-top: 1em;
+            border-radius: 5px;
+            animation: slideIn 1s ease-out;
+        }
+
+        /* Slide-in animation for success message */
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Payment</h1>
+
+        <!-- Payment Method Selection -->
+        <div class="payment-method">
+            <button onclick="selectPaymentMethod('card')">Card</button>
+            <button onclick="selectPaymentMethod('upi')">UPI</button>
+            <button onclick="selectPaymentMethod('wallet')">Wallet</button>
+        </div>
+
+        <!-- Payment Form -->
+        <form id="paymentForm" onsubmit="return processPayment()">
+
+            <!-- Card Payment Form -->
+            <div id="cardForm" class="form-group">
+                <label for="cardNumber">Card Number</label>
+                <input type="text" id="cardNumber" name="cardNumber" placeholder="Enter your card number" required>
+                
+                <label for="cardExpiry">Expiry Date</label>
+                <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/YY" required>
+                
+                <label for="cardCVV">CVV</label>
+                <input type="text" id="cardCVV" name="cardCVV" placeholder="Enter CVV" required>
+            </div>
+
+            <!-- UPI Payment Form -->
+            <div id="upiForm" class="form-group">
+                <label for="upiId">UPI ID</label>
+                <input type="text" id="upiId" name="upiId" placeholder="Enter your UPI ID" required>
+            </div>
+
+            <!-- Wallet Payment Form -->
+            <div id="walletForm" class="form-group">
+                <label for="walletNumber">Wallet </label>
+<input type="text" id="amount" name="add amount" placeholder="enter amount" required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-button">Make Payment</button>
+        </form>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="success-message">
+            Payment successful! Redirecting...
+        </div>
+    </div>
+
+    <script>
+        // Hide all payment forms initially
+        const cardForm = document.getElementById('cardForm');
+        const upiForm = document.getElementById('upiForm');
+        const walletForm = document.getElementById('walletForm');
+        const successMessage = document.getElementById('successMessage');
+
+        // Function to display the appropriate payment form
+        function selectPaymentMethod(method) {
+            cardForm.style.display = 'none';
+            upiForm.style.display = 'none';
+            walletForm.style.display = 'none';
+
+            if (method === 'card') {
+                cardForm.style.display = 'block';
+            } else if (method === 'upi') {
+                upiForm.style.display = 'block';
+            } else if (method === 'wallet') {
+                walletForm.style.display = 'block';
+            }
+        }
+
+        // Function to handle payment submission
+        function processPayment() {
+            // Mock form validation
+            let valid = true;
+
+            if (valid) {
+                // Hide form and show success message
+                document.getElementById('paymentForm').style.display = 'none';
+                successMessage.style.display = 'block';
+
+                // Simulate redirect after payment success
+                setTimeout(() => {
+                    window.location.href = 'success.html'; // Replace with actual success page
+                }, 3000);
+            }
+
+            return false; // Prevent form from actually submitting
+        }
+    </script>
+</body>
+</html>

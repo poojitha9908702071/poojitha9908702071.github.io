@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Routes - Bus Pass System</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f9f9f9, #e0f7fa); /* Minimal gradient */
+            color: #333;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2em;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            margin-bottom: 1em;
+            color: #333;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .route-container {
+            font-size: 1.5em;
+            margin-bottom: 1.5em;
+        }
+
+        .check-button {
+            display: inline-block;
+            padding: 0.75em 2em;
+            background: linear-gradient(135deg, #89f7fe, #66a6ff); /* Light blue gradient */
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            border: none;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .check-button:hover {
+            background: linear-gradient(135deg, #66a6ff, #89f7fe); /* Hover effect */
+            transform: scale(1.05);
+        }
+
+        #todaysRoute {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Check Today's Route</h1>
+        <div class="route-container">
+            <p id="todaysRoute">Today's Route will be displayed here...</p>
+        </div>
+        <button class="check-button" onclick="checkTodaysRoute()">Check Routes</button>
+    </div>
+
+    <script>
+        const routesByDate = {
+            '2024-09-18': 'SIMATS to Anna Nagar',
+            '2024-09-19': 'SIMATS to T. Nagar',
+            '2024-09-20': 'SIMATS to Koyambedu',
+            '2024-09-21': 'SIMATS to Velachery',
+            '2024-09-22': 'SIMATS to Chennai Central',
+            '2024-09-23': 'SIMATS to Tambaram',
+            // Add more date-route mappings as needed
+        };
+
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function checkTodaysRoute() {
+            const today = new Date();
+            const formattedDate = formatDate(today);
+            const route = routesByDate[formattedDate] || 'No route assigned for today';
+
+            document.getElementById('todaysRoute').textContent = route;
+        }
+    </script>
+</body>
+</html>

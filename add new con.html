@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Conductor - Bus Pass System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('your-background-image.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: black;
+        }
+
+        .container {
+            padding: 2em;
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: black;
+        }
+
+        .input-group {
+            margin-bottom: 1em;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 0.75em;
+            background-color: #ff69b4; /* Light pink */
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff85b3; /* Slightly darker pink */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Conductor</h1>
+        <form id="addConductorForm">
+            <div class="input-group">
+                <label for="id">Conductor ID:</label>
+                <input type="text" id="id" name="id" required>
+            </div>
+            <div class="input-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="input-group">
+                <label for="status">Status:</label>
+                <input type="text" id="status" name="status" required>
+            </div>
+            <button type="submit">Add Conductor</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('addConductorForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get form data
+            const id = document.getElementById('id').value;
+            const name = document.getElementById('name').value;
+            const status = document.getElementById('status').value;
+
+            // Save new conductor to local storage
+            const conductors = JSON.parse(localStorage.getItem('conductors')) || [];
+            conductors.push({ id, name, status });
+            localStorage.setItem('conductors', JSON.stringify(conductors));
+
+            // Redirect to manage conductors page
+            window.location.href = 'manage_conductors.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Route - Bus Pass System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('i2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            padding: 2em;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            margin-bottom: 1em;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 1em;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+
+        input[type="text"], input[type="time"] {
+            width: 100%;
+            padding: 0.75em;
+            margin-top: 0.5em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, input[type="time"]:focus {
+            border-color: #ff69b4;
+        }
+
+        button {
+            padding: 0.75em;
+            background-color: #ff69b4;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff85b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Route</h1>
+        <form id="addRouteForm">
+            <div class="input-group">
+                <label for="routeNumber">Route Number:</label>
+                <input type="text" id="routeNumber" name="routeNumber" required>
+            </div>
+            <div class="input-group">
+                <label for="from">From:</label>
+                <input type="text" id="from" name="from" required>
+            </div>
+            <div class="input-group">
+                <label for="to">To:</label>
+                <input type="text" id="to" name="to" required>
+            </div>
+            <div class="input-group">
+                <label for=" time"> Starting Time:</label>
+                <input type="time" id="time" name="time" required>
+            </div>
+            <button type="submit">Add Route</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('addRouteForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get form data
+            const routeNumber = document.getElementById('routeNumber').value;
+            const from = document.getElementById('from').value;
+            const to = document.getElementById('to').value;
+            const time = document.getElementById('time').value;
+
+            // Save new route to local storage
+            const routes = JSON.parse(localStorage.getItem('routes')) || [];
+            routes.push({ routeNumber, from, to, time });
+            localStorage.setItem('routes', JSON.stringify(routes));
+
+            // Redirect to manage routes page
+            window.location.href = 'manage_routes.html';
+        });
+    </script>
+</body>
+</html>
